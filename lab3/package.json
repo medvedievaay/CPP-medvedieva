@@ -1,0 +1,21 @@
+{
+  "name": "graphql-auth-lab",
+  "version": "1.0.0",
+  "description": "GraphQL API (Apollo Server) із JWT-автентифікацією для застосунку August",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "private": true,
+  "dependencies": {
+    "@apollo/server": "^4.13.0",
+    "bcryptjs": "^2.4.3",
+    "graphql": "^16.14.2",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
