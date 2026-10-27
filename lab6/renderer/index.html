@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>August Desktop</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="header">
+    <div class="container header__inner">
+        <h1>August Desktop</h1>
+        <p class="header__subtitle">
+            Десктопна версія застосунку супермаркету August: каталог
+            і кошик, який зберігається у файл.
+        </p>
+    </div>
+</header>
+
+<main class="container main">
+    <!-- Каталог товарів (малюється скриптом) -->
+    <section class="card">
+        <h2>Каталог</h2>
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <!-- Форма додавання власного товару -->
+    <section class="card">
+        <h2>Додати товар</h2>
+        <div class="add-form">
+            <input type="text" id="itemInput" placeholder="Введіть назву товару">
+            <input type="text" id="priceInput" placeholder="Ціна, грн" inputmode="decimal">
+            <button type="button" id="addItemButton" class="product-card__add add-form__button">Додати товар</button>
+        </div>
+        <p id="message" class="message"></p>
+    </section>
+
+    <!-- Кошик -->
+    <section class="card">
+        <h2>Кошик</h2>
+        <div id="cartList"></div>
+        <div class="cart-total">
+            <span>До оплати</span>
+            <span id="cartTotal">0.00 грн</span>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>Лабораторна робота 6: десктопний застосунок на Electron</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

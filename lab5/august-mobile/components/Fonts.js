@@ -7,3 +7,11 @@ export const displayText = {
   paddingLeft: 4,
   paddingRight: 4,
 };
+
+// Однаковий заголовок для карток «Додати товар» і «Каталог»
+export const sectionTitle = {
+  ...displayText,
+  fontSize: 18,
+  color: "#161616",
+  marginBottom: 10,
+};

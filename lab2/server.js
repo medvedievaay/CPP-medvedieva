@@ -20,7 +20,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Тестовий маршрут
 app.get("/", (req, res) => {
   res.send("Сервер August працює!");
 });

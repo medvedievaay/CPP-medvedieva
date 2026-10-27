@@ -1,0 +1,17 @@
+{
+  "name": "august-desktop",
+  "version": "1.0.0",
+  "description": "Десктопна версія застосунку супермаркету August (Electron)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "private": true,
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}

@@ -1,0 +1,72 @@
+/* Додаткові стилі десктопної версії (style.css з lab1 не змінюється) */
+
+.add-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.add-form input {
+    padding: 9px 14px;
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-pill);
+    font-family: inherit;
+    font-size: 13px;
+    background-color: var(--color-surface);
+}
+
+.add-form input:focus {
+    outline: none;
+    border-color: var(--color-ink);
+    background-color: var(--color-white);
+}
+
+#itemInput {
+    flex: 1 1 260px;
+}
+
+#priceInput {
+    flex: 0 0 130px;
+}
+
+.add-form__button {
+    width: auto;
+    flex: 0 0 auto;
+    padding: 0 20px;
+}
+
+.message {
+    min-height: 20px;
+    margin: 12px 0 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.message--error {
+    color: #d93a3a;
+}
+
+.message--success {
+    color: #2e9e47;
+}
+
+#cartList .cart-item__info {
+    flex: 1 1 auto;
+}
+
+.cart-empty {
+    padding: 24px 0;
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 13px;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-line);
+    font-size: 15px;
+    font-weight: 600;
+}
