@@ -1,14 +1,30 @@
 // Логіка інтерфейсу (рендер-процес). Доступу до Node.js немає —
 // усі операції з файлом виконуються через window.cartAPI.
 
+// Категорії товарів
+const categories = [
+    "Молочні продукти та яйця",
+    "Хліб та випічка",
+    "Напої",
+    "Кава, чай",
+    "Солодощі",
+    "Снеки та чипси",
+    "М'ясо",
+    "Риба",
+    "Фрукти, овочі",
+    "Готові страви і кулінарія",
+    "Бакалія і консерви",
+    "Інше",
+];
+
 // Товари каталогу (ті самі, що у вебверсії з лабораторної роботи 1)
 const products = [
-    { name: "Молоко 2.5%, 1 л", price: 54.99, icon: "🥛" },
-    { name: "Хліб пшеничний, 500 г", price: 32.5, icon: "🍞" },
-    { name: "Яйця курячі, 10 шт", price: 68, icon: "🥚" },
-    { name: "Кава мелена, 250 г", price: 149.99, icon: "☕" },
-    { name: "Сир твердий, 300 г", price: 119, icon: "🧀" },
-    { name: "Вода негазована, 1.5 л", price: 24.99, icon: "💧" },
+    { name: "Молоко 2.5%, 1 л", price: 54.99, icon: "🥛", category: "Молочні продукти та яйця" },
+    { name: "Хліб пшеничний, 500 г", price: 32.5, icon: "🍞", category: "Хліб та випічка" },
+    { name: "Яйця курячі, 10 шт", price: 68, icon: "🥚", category: "Молочні продукти та яйця" },
+    { name: "Кава мелена, 250 г", price: 149.99, icon: "☕", category: "Кава, чай" },
+    { name: "Сир твердий, 300 г", price: 119, icon: "🧀", category: "Молочні продукти та яйця" },
+    { name: "Вода негазована, 1.5 л", price: 24.99, icon: "💧", category: "Напої" },
 ];
 
 const productGrid = document.getElementById("productGrid");
@@ -18,6 +34,10 @@ const addItemButton = document.getElementById("addItemButton");
 const messageBox = document.getElementById("message");
 const cartList = document.getElementById("cartList");
 const cartTotal = document.getElementById("cartTotal");
+const categoryChips = document.getElementById("categoryChips");
+
+// Обрана категорія у формі (порожній рядок — ще не обрана)
+let selectedCategory = "";
 
 // Масив товарів кошика: { id, name, price, qty, icon }
 let cart = [];
@@ -58,6 +78,27 @@ function createButton(className, text, label, onClick) {
 }
 
 /*
+  Функція renderCategoryChips малює кнопки-категорії у формі.
+  Обрана категорія підсвічується; повторний клік знімає вибір.
+*/
+function renderCategoryChips() {
+    categoryChips.innerHTML = "";
+
+    categories.forEach(function (category) {
+        const chip = createButton("chip", category, null, function () {
+            selectedCategory = selectedCategory === category ? "" : category;
+            renderCategoryChips();
+        });
+        chip.setAttribute("role", "radio");
+        chip.setAttribute("aria-checked", String(selectedCategory === category));
+        if (selectedCategory === category) {
+            chip.classList.add("chip--active");
+        }
+        categoryChips.appendChild(chip);
+    });
+}
+
+/*
   Функція renderProducts малює картки товарів каталогу
   з кнопкою "Додати".
 */
@@ -73,6 +114,10 @@ function renderProducts() {
         image.setAttribute("aria-hidden", "true");
         image.textContent = product.icon;
 
+        const category = document.createElement("p");
+        category.className = "product-card__category";
+        category.textContent = product.category;
+
         const price = document.createElement("p");
         price.className = "product-card__price";
         price.textContent = formatPrice(product.price);
@@ -85,11 +130,11 @@ function renderProducts() {
         action.className = "product-card__action";
         action.appendChild(
             createButton("product-card__add", "Додати", null, function () {
-                addToCart(product.name, product.price, product.icon);
+                addToCart(product.name, product.price, product.icon, product.category);
             })
         );
 
-        card.append(image, price, name, action);
+        card.append(image, category, price, name, action);
         productGrid.appendChild(card);
     });
 }
@@ -117,6 +162,10 @@ function renderCart() {
         image.setAttribute("aria-hidden", "true");
         image.textContent = item.icon || "🛒";
 
+        const itemCategory = document.createElement("p");
+        itemCategory.className = "product-card__category";
+        itemCategory.textContent = item.category || "Інше";
+
         const itemName = document.createElement("p");
         itemName.className = "cart-item__name";
         itemName.textContent = item.name;
@@ -127,7 +176,7 @@ function renderCart() {
 
         const info = document.createElement("div");
         info.className = "cart-item__info";
-        info.append(itemName, itemPrice);
+        info.append(itemCategory, itemName, itemPrice);
 
         const stepper = document.createElement("div");
         stepper.className = "product-card__stepper cart-item__stepper";
@@ -168,7 +217,7 @@ function renderCart() {
   Функція addToCart додає товар у кошик (або збільшує кількість,
   якщо такий товар уже є), перемальовує список і зберігає його у файл.
 */
-async function addToCart(name, price, icon) {
+async function addToCart(name, price, icon, category) {
     const existing = cart.find(function (item) {
         return item.name === name;
     });
@@ -176,7 +225,7 @@ async function addToCart(name, price, icon) {
     if (existing) {
         existing.qty += 1;
     } else {
-        cart.push({ id: Date.now(), name: name, price: price, qty: 1, icon: icon || "🛒" });
+        cart.push({ id: Date.now(), name: name, price: price, qty: 1, icon: icon || "🛒", category: category || "Інше" });
     }
 
     renderCart();
@@ -218,7 +267,7 @@ async function removeItem(id) {
 
 /*
   Функція addCustomItem обробляє форму "Додати товар":
-  перевіряє назву (без пробілів) і ціну, після чого додає товар.
+  перевіряє назву (без пробілів), ціну і категорію, після чого додає товар.
 */
 async function addCustomItem() {
     const name = itemInput.value.trim();
@@ -234,9 +283,17 @@ async function addCustomItem() {
         return;
     }
 
+    if (selectedCategory === "") {
+        showMessage("Будь ласка, оберіть категорію товару.", "red");
+        return;
+    }
+
+    const category = selectedCategory;
     itemInput.value = "";
     priceInput.value = "";
-    await addToCart(name, price, "🛒");
+    selectedCategory = "";
+    renderCategoryChips();
+    await addToCart(name, price, "🛒", category);
 }
 
 // Додавання кнопкою та клавішею Enter у полях форми
@@ -255,6 +312,7 @@ addItemButton.addEventListener("click", addCustomItem);
   (через preload-міст) і показуємо його у списку.
 */
 document.addEventListener("DOMContentLoaded", async function () {
+    renderCategoryChips();
     renderProducts();
 
     const saved = await window.cartAPI.loadCart();

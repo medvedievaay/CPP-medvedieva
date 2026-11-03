@@ -70,3 +70,46 @@
     font-size: 15px;
     font-weight: 600;
 }
+
+/* Категорії */
+.category-label {
+    margin: 16px 0 8px;
+    font-size: 13px;
+    color: var(--color-muted);
+}
+
+.category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.chip {
+    padding: 8px 16px;
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-white);
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.chip:hover {
+    border-color: var(--color-ink);
+}
+
+.chip--active {
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-white);
+}
+
+.product-card__category {
+    margin: 0 0 2px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}

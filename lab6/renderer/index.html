@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:">
+          content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>August Desktop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="app.css">
 </head>
@@ -33,6 +36,10 @@
         <div class="add-form">
             <input type="text" id="itemInput" placeholder="Введіть назву товару">
             <input type="text" id="priceInput" placeholder="Ціна, грн" inputmode="decimal">
+        </div>
+        <p class="category-label" id="categoryLabel">Категорія</p>
+        <div class="category-chips" id="categoryChips" role="radiogroup" aria-labelledby="categoryLabel"></div>
+        <div class="add-form">
             <button type="button" id="addItemButton" class="product-card__add add-form__button">Додати товар</button>
         </div>
         <p id="message" class="message"></p>

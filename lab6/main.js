@@ -1,5 +1,5 @@
 // Головний процес Electron: створює вікно та працює з файлом cart.json
-const { app, BrowserWindow, ipcMain } = require("electron");
+const {app, BrowserWindow, ipcMain} = require("electron");
 const path = require("path");
 const fs = require("fs");
 
