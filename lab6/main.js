@@ -55,7 +55,7 @@ ipcMain.handle("cart:save", (event, items) => {
 app.whenReady().then(() => {
     createWindow();
 
-    // macOS: створюємо нове вікно, якщо клікнули на іконку в Dock, а вікон немає
+    // створюємо нове вікно, якщо клікнули на іконку в Dock, а вікон немає
     app.on("activate", () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow();

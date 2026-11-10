@@ -2,9 +2,7 @@ import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import ProductItem from "./ProductItem";
 import { sectionTitle } from "./Fonts";
 
-// FlatList — основа всієї сторінки: шапка й форма передаються через prop header,
-// тому прокручується вся сторінка. Рамку «Каталогу» складено з трьох частин:
-// верх (заголовок і пошук), боки навколо кожного товару та низ.
+
 export default function ProductList({ header, products, search, onSearch, onChangeQty, onDelete }) {
     return (
         <FlatList
