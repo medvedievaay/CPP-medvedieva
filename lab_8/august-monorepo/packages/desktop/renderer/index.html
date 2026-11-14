@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>August Desktop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="header" id="top">
+    <div class="topnav-bar">
+        <div class="container topnav">
+            <a class="topnav__logo" href="#top">August</a>
+
+            <div class="nav-extras" id="navExtras">
+                <button class="topnav__catalog" id="catalogButton" type="button"> Всі товари </button>
+
+                <div class="topnav__search">
+                    <input type="text" id="searchInput" placeholder="Я шукаю…">
+                </div>
+            </div>
+
+            <div class="topnav__delivery">
+                <span class="topnav__delivery-title">Доставка</span>
+                <span class="topnav__delivery-subtitle">Вкажіть адресу доставки</span>
+            </div>
+
+            <!-- Кнопка кошика лише показує кількість і суму -->
+            <button class="topnav__cart" id="cartButton" type="button">
+                <span class="topnav__cart-count" id="cartCount">0</span>
+                <span class="topnav__cart-label">Кошик</span>
+                <span class="topnav__cart-total" id="navCartTotal">0 грн</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container header__inner">
+        <div class="hero-extras" id="heroExtras"></div>
+
+        <h1>Продукти щодня, без черг і зайвого клопоту</h1>
+        <p class="header__subtitle">
+            Кросплатформний застосунок супермаркету August — каталог,
+            замовлення з доставкою чи самовивозом та програма лояльності
+            в одному місці.
+        </p>
+    </div>
+</header>
+
+<main class="container main">
+    <!-- Каталог товарів (малюється скриптом) -->
+    <section class="card" id="catalogSection">
+        <h2>Каталог</h2>
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <!-- Форма додавання власного товару -->
+    <section class="card">
+        <h2>Додати товар</h2>
+        <div class="add-form">
+            <input type="text" id="itemInput" placeholder="Введіть назву товару">
+            <input type="text" id="priceInput" placeholder="Ціна, грн" inputmode="decimal">
+        </div>
+        <p class="category-label" id="categoryLabel">Категорія</p>
+        <div class="category-chips" id="categoryChips" role="radiogroup" aria-labelledby="categoryLabel"></div>
+        <div class="add-form">
+            <button type="button" id="addItemButton" class="product-card__add add-form__button">Додати товар</button>
+        </div>
+        <p id="message" class="message"></p>
+    </section>
+
+    <!-- Кошик -->
+    <section class="card">
+        <h2>Кошик</h2>
+        <div id="cartList"></div>
+        <div class="cart-total">
+            <span>До оплати</span>
+            <span id="cartTotal">0.00 грн</span>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>Лабораторна робота 7-8: десктопний клієнт на спільному ядрі @august/core</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "august-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Монорепозиторій August: спільне ядро, веб-клієнт і десктопний клієнт (Electron)",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "test": "npm test --workspaces --if-present",
+    "start:web": "npm run start -w august-web",
+    "start:desktop": "npm run start -w august-monorepo-desktop"
+  }
+}
