@@ -8,13 +8,42 @@
     <title>August Desktop</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
-<header class="header">
+<header class="header" id="top">
+    <div class="topnav-bar">
+        <div class="container topnav">
+            <a class="topnav__logo" href="#top">August</a>
+
+            <div class="nav-extras" id="navExtras">
+                <button class="topnav__catalog" id="catalogButton" type="button"> Всі товари</button>
+
+                <div class="topnav__search">
+                    <input type="text" id="searchInput" placeholder="Я шукаю…">
+                </div>
+            </div>
+
+            <div class="topnav__delivery">
+                <span class="topnav__delivery-title">Доставка</span>
+                <span class="topnav__delivery-subtitle">Вкажіть адресу доставки</span>
+            </div>
+
+            <!-- Кнопка кошика лише показує кількість і суму, натискання нічого не робить -->
+            <button class="topnav__cart" id="cartButton" type="button">
+                <span class="topnav__cart-count" id="cartCount">0</span>
+                <span class="topnav__cart-label">Кошик</span>
+                <span class="topnav__cart-total" id="navCartTotal">0 грн</span>
+            </button>
+        </div>
+    </div>
+
     <div class="container header__inner">
+        <div class="hero-extras" id="heroExtras"></div>
+
         <h1>August Desktop</h1>
         <p class="header__subtitle">
             Десктопна версія застосунку супермаркету August: каталог
@@ -24,6 +53,12 @@
 </header>
 
 <main class="container main">
+    <!-- Каталог товарів (малюється скриптом) -->
+    <section class="card" id="catalogSection">
+        <h2>Каталог</h2>
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+
     <!-- Форма додавання власного товару -->
     <section class="card">
         <h2>Додати товар</h2>
@@ -37,12 +72,6 @@
             <button type="button" id="addItemButton" class="product-card__add add-form__button">Додати товар</button>
         </div>
         <p id="message" class="message"></p>
-    </section>
-
-    <!-- Каталог товарів (малюється скриптом) -->
-    <section class="card">
-        <h2>Каталог</h2>
-        <div class="product-grid" id="productGrid"></div>
     </section>
 
     <!-- Кошик -->

@@ -19,12 +19,12 @@ const categories = [
 
 // Товари каталогу (ті самі, що у вебверсії з лабораторної роботи 1)
 const products = [
-    { name: "Молоко 2.5%, 1 л", price: 54.99, icon: "🥛", category: "Молочні продукти та яйця" },
-    { name: "Хліб пшеничний, 500 г", price: 32.5, icon: "🍞", category: "Хліб та випічка" },
-    { name: "Яйця курячі, 10 шт", price: 68, icon: "🥚", category: "Молочні продукти та яйця" },
-    { name: "Кава мелена, 250 г", price: 149.99, icon: "☕", category: "Кава, чай" },
-    { name: "Сир твердий, 300 г", price: 119, icon: "🧀", category: "Молочні продукти та яйця" },
-    { name: "Вода негазована, 1.5 л", price: 24.99, icon: "💧", category: "Напої" },
+    {name: "Молоко 2.5%, 1 л", price: 54.99, icon: "🥛", category: "Молочні продукти та яйця"},
+    {name: "Хліб пшеничний, 500 г", price: 32.5, icon: "🍞", category: "Хліб та випічка"},
+    {name: "Яйця курячі, 10 шт", price: 68, icon: "🥚", category: "Молочні продукти та яйця"},
+    {name: "Кава мелена, 250 г", price: 149.99, icon: "☕", category: "Кава, чай"},
+    {name: "Сир твердий, 300 г", price: 119, icon: "🧀", category: "Молочні продукти та яйця"},
+    {name: "Вода негазована, 1.5 л", price: 24.99, icon: "💧", category: "Напої"},
 ];
 
 const productGrid = document.getElementById("productGrid");
@@ -35,6 +35,20 @@ const messageBox = document.getElementById("message");
 const cartList = document.getElementById("cartList");
 const cartTotal = document.getElementById("cartTotal");
 const categoryChips = document.getElementById("categoryChips");
+
+// Елементи верхньої панелі навігації
+const topnavBar = document.querySelector(".topnav-bar");
+const topnavLogo = document.querySelector(".topnav__logo");
+const navExtras = document.getElementById("navExtras");
+const heroExtras = document.getElementById("heroExtras");
+const catalogButton = document.getElementById("catalogButton");
+const catalogSection = document.getElementById("catalogSection");
+const searchInput = document.getElementById("searchInput");
+const cartCount = document.getElementById("cartCount");
+const navCartTotal = document.getElementById("navCartTotal");
+
+// Пошуковий запит (фільтрує каталог за назвою)
+let searchQuery = "";
 
 // Обрана категорія у формі (порожній рядок — ще не обрана)
 let selectedCategory = "";
@@ -59,6 +73,14 @@ async function saveCart() {
 // Форматує число як ціну: 54.99 -> "54.99 грн"
 function formatPrice(value) {
     return value.toFixed(2) + " грн";
+}
+
+// Повертає кількість товару в кошику (0, якщо його там ще немає)
+function getQty(name) {
+    const item = cart.find(function (entry) {
+        return entry.name === name;
+    });
+    return item ? item.qty : 0;
 }
 
 /*
@@ -106,6 +128,11 @@ function renderProducts() {
     productGrid.innerHTML = "";
 
     products.forEach(function (product) {
+        // Пошук: показуємо лише товари, назва яких містить запит
+        if (!product.name.toLowerCase().includes(searchQuery)) {
+            return;
+        }
+
         const card = document.createElement("article");
         card.className = "product-card";
 
@@ -126,13 +153,36 @@ function renderProducts() {
         name.className = "product-card__name";
         name.textContent = product.name;
 
+        // Кнопка "Додати" або лічильник "− N шт +" (залежно від кошика)
         const action = document.createElement("div");
         action.className = "product-card__action";
-        action.appendChild(
-            createButton("product-card__add", "Додати", null, function () {
-                addToCart(product.name, product.price, product.icon, product.category);
-            })
-        );
+
+        const qty = getQty(product.name);
+        if (qty === 0) {
+            action.appendChild(
+                createButton("product-card__add", "Додати", null, function () {
+                    addToCart(product.name, product.price, product.icon, product.category);
+                })
+            );
+        } else {
+            const stepper = document.createElement("div");
+            stepper.className = "product-card__stepper";
+
+            const qtyLabel = document.createElement("span");
+            qtyLabel.className = "product-card__qty";
+            qtyLabel.textContent = qty + " шт";
+
+            stepper.append(
+                createButton("product-card__qty-btn", "−", "Зменшити кількість", function () {
+                    changeQtyByName(product.name, -1);
+                }),
+                qtyLabel,
+                createButton("product-card__qty-btn", "+", "Збільшити кількість", function () {
+                    changeQtyByName(product.name, 1);
+                })
+            );
+            action.appendChild(stepper);
+        }
 
         card.append(image, category, price, name, action);
         productGrid.appendChild(card);
@@ -211,6 +261,13 @@ function renderCart() {
         return sum + item.price * item.qty;
     }, 0);
     cartTotal.textContent = formatPrice(total);
+
+    // Оновлюємо кнопку кошика у шапці та лічильники в каталозі
+    cartCount.textContent = cart.reduce(function (sum, item) {
+        return sum + item.qty;
+    }, 0);
+    navCartTotal.textContent = total.toFixed(2) + " грн";
+    renderProducts();
 }
 
 /*
@@ -225,7 +282,7 @@ async function addToCart(name, price, icon, category) {
     if (existing) {
         existing.qty += 1;
     } else {
-        cart.push({ id: Date.now(), name: name, price: price, qty: 1, icon: icon || "🛒", category: category || "Інше" });
+        cart.push({id: Date.now(), name: name, price: price, qty: 1, icon: icon || "🛒", category: category || "Інше"});
     }
 
     renderCart();
@@ -252,6 +309,17 @@ async function changeQty(id, delta) {
 
     renderCart();
     await saveCart();
+}
+
+// Змінює кількість товару за назвою (для лічильника в каталозі)
+function changeQtyByName(name, delta) {
+    const item = cart.find(function (entry) {
+        return entry.name === name;
+    });
+
+    if (item) {
+        changeQty(item.id, delta);
+    }
 }
 
 // Видаляє товар із кошика, зберігає список і показує повідомлення
@@ -321,4 +389,48 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     renderCart();
+});
+
+/*
+  Функція adjustBodyOffset підганяє верхній відступ сторінки під висоту
+  закріпленої панелі навігації, щоб контент не ховався під нею.
+*/
+function adjustBodyOffset() {
+    const barHeight = topnavBar.offsetHeight;
+    document.body.style.paddingTop = barHeight + "px";
+    document.documentElement.style.scrollPaddingTop = barHeight + "px";
+}
+
+// На мобільних блок "Всі товари" + пошук переходить у шапку під панель
+const mobileQuery = window.matchMedia("(max-width: 600px)");
+
+function placeNavExtras() {
+    if (mobileQuery.matches) {
+        if (navExtras.parentElement !== heroExtras) {
+            heroExtras.appendChild(navExtras);
+            navExtras.classList.add("in-hero");
+        }
+    } else if (navExtras.parentElement !== topnavLogo.parentElement) {
+        topnavLogo.insertAdjacentElement("afterend", navExtras);
+        navExtras.classList.remove("in-hero");
+    }
+    adjustBodyOffset();
+}
+
+placeNavExtras();
+window.addEventListener("resize", placeNavExtras);
+window.addEventListener("load", placeNavExtras);
+
+// Кнопка "Всі товари" прокручує сторінку до каталогу
+catalogButton.addEventListener("click", function () {
+    catalogSection.scrollIntoView({behavior: "smooth"});
+});
+
+// Пошук фільтрує картки каталогу під час введення
+searchInput.addEventListener("input", function () {
+    searchQuery = searchInput.value.trim().toLowerCase();
+    renderProducts();
+    if (searchQuery !== "") {
+        catalogSection.scrollIntoView({behavior: "smooth"});
+    }
 });
